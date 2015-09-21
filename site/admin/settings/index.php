@@ -10,6 +10,10 @@
     }
     else
     {
+        $db->set_charset("utf8");
+        $db->query("SET NAMES utf8");
+        $db->query("SET CHARACTER SET utf8");
+
         $exists = table_exists( $db, $TABLE_NAME );
         if (is_null($exists))
             $error = "Unable to check for table named '$TABLE_NAME'.";
@@ -28,7 +32,7 @@
                           `approved` tinyint(3) NOT NULL DEFAULT '0',
                           `used` tinyint(3) NOT NULL DEFAULT '0',
                           PRIMARY KEY (id)
-                        ) DEFAULT CHARSET=utf8";
+                        ) DEFAULT CHARSET=utf8"; // utf8mb4?
             }
             else if ($table_action == 'drop')
             {
@@ -78,6 +82,7 @@
         <li><a href="<?php echo HOST ?>/admin/">All</a></li>
         <li><a href="<?php echo HOST ?>/admin/?approved=0">Pending</a></li>
         <li><a href="<?php echo HOST ?>/admin/?approved=1">Approved</a></li>
+        <li><a href="<?php echo HOST ?>/admin/?approved=-1">Rejected</a></li>
         <li class="active"><a href="<?php echo HOST ?>/admin/settings/">Settings</a></li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -87,6 +92,7 @@
 <div class="container">
 
 <?php
+
     if (!empty($error))
     {
         echo "<div class=\"alert alert-danger\" role=\"alert\">
@@ -104,12 +110,21 @@
 
     <div class="row">
         <div class="col-md-4">
+            <h3>Form</h3>
+            <p>
+                Input: enabled
+            </p>
+            <p>
+                <code id="inform" onclick="selectText('inform')"><?php echo HOST ?>/in/form/</code>
+            </p>
+        </div>
+        <div class="col-md-4">
             <h3>Twilio</h3>
             <p>
                 Input: enabled
             </p>
             <p>
-                <code><?php echo HOST ?>/in/twilio/</code>
+                <code id="intwilio" onclick="selectText('intwilio')"><?php echo HOST ?>/in/twilio/</code>
             </p>
         </div>
         <div class="col-md-4">
@@ -118,13 +133,8 @@
                 Input: enabled
             </p>
             <p>
-                <code><?php echo HOST ?>/in/ifttt/sms/</code>
+                <code id="inifttt" onclick="selectText('inifttt')"><?php echo HOST ?>/in/ifttt/sms/</code>
             </p>
-        </div>
-        <div class="col-md-4">
-
-            <h3>Pusher</h3>
-
         </div>
     </div>
 
@@ -154,6 +164,20 @@
             <p>
                 <a href="<?php echo HOST ?>/out/xml/" target="_blank"><?php echo HOST ?>/out/xml/</a>
             </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h3>CSV</h3>
+            <p>
+                <a href="<?php echo HOST ?>/out/csv/" target="_blank"><?php echo HOST ?>/out/csv/</a>
+            </p>
+        </div>
+        <div class="col-md-4">
+           
+        </div>
+        <div class="col-md-4">
+           
         </div>
     </div>
 
